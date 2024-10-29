@@ -9,18 +9,15 @@ const path = require('path');
 const {join} = require('path');
 require('dotenv').config();
 
-let dir = __dirname;
-dir = dir.slice(0, -3);
-
 const router = require('./server/routes/router');
 const User = require('./server/models/User');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use('/css', express.static(join(dir, 'public/css')))
-app.use('/js', express.static(join(dir, 'public/js')))
-app.use('/storage', express.static(join(dir, 'public/storage')))
+app.use('/css', express.static(join(__dirname, 'public/css')))
+app.use('/js', express.static(join(__dirname, 'public/js')))
+app.use('/storage', express.static(join(__dirname, 'public/storage')))
 
 // Conectar a MongoDB
 mongoose.connect(process.env.MONGODB_URI)
