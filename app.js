@@ -41,17 +41,17 @@ app.use(passport.session());
 // Servir archivos estáticos
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Configurar Passport
-//passport.use(new DiscordStrategy({
-//    clientID: process.env.DISCORD_CLIENT_ID,
-//    clientSecret: process.env.DISCORD_CLIENT_SECRET,
-//    callbackURL: 'http://localhost:3000/auth/discord/callback',
-//    scope: ['identify', 'email']
-//},
-//    (accessToken, refreshToken, profile, done) => {
-//        return done(null, profile);
-//    }
-//));
+
+passport.use(new DiscordStrategy({
+    clientID: process.env.DISCORD_CLIENT_ID,
+    clientSecret: process.env.DISCORD_CLIENT_SECRET,
+    callbackURL: 'http://localhost:3000/auth/discord/callback',
+    scope: ['identify', 'email']
+},
+    (accessToken, refreshToken, profile, done) => {
+        return done(null, profile);
+    }
+));
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
