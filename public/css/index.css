@@ -28,6 +28,11 @@ body{
 
 
 .item{
+    transition: 0.2s;
+    cursor: pointer;
+}
+.item:hover{
+    transform: scale(1.1);
     cursor: pointer;
 }
 .item img {
