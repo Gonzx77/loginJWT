@@ -12,4 +12,20 @@ router.get('/auth/discord/callback',
     discordController.authCallback
 );
 
+router.get('/auth/facebook', passport.authenticate('facebook'));
+
+// Callback de Discord
+router.get('/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/' }),
+    discordController.authCallback
+);
+
+router.get('/auth/google', passport.authenticate('google'));
+
+// Callback de Discord
+router.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/' }),
+    discordController.authCallback
+);
+
 module.exports = router;
