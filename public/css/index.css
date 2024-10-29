@@ -26,6 +26,10 @@ body{
     gap: 20px;
 }
 
+
+.item{
+    cursor: pointer;
+}
 .item img {
     width: 100px;
     height: auto;
