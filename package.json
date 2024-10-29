@@ -2,14 +2,23 @@
   "name": "loginjwt",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    "start": "node --watch app.js",
+    "dev": "nodemon app.js"
+}
+,
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": ".env:",
   "dependencies": {
-    "express": "^4.21.1"
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "mongoose": "^8.7.3",
+    "passport": "^0.7.0",
+    "passport-discord": "^0.1.4",
+    "passport-facebook": "^3.0.0"
   }
 }
