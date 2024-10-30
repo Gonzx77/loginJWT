@@ -80,15 +80,21 @@ passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_CLIENT_ID,
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     callbackURL: "http://localhost:3000/auth/facebook/callback",
-    profileFields: ['id', 'displayName', 'emails', 'photos'] // Asegúrate de que esto esté aquí
+    profileFields: ['id', 'displayName', 'emails', 'photos']
 },
 (accessToken, refreshToken, profile, done) => {
+    console.log('Facebook profile:', profile); // Agregar este log para depuración
+
+    // Verifica que los campos existen antes de acceder a ellos
+    const email = (profile.emails && profile.emails.length > 0) ? profile.emails[0].value : null;
+    const avatar = (profile.photos && profile.photos.length > 0) ? profile.photos[0].value : null;
+
     User.findOneAndUpdate(
-        { facebookId: profile.id }, // Cambiado a facebookId
+        { facebookId: profile.id },
         {
             username: profile.displayName,
-            email: profile.emails[0].value,
-            avatar: profile.photos[0].value, // Cambiado a photos
+            email: email,
+            avatar: avatar,
             accessToken: refreshToken,
         },
         { upsert: true, new: true }
@@ -98,6 +104,7 @@ passport.use(new FacebookStrategy({
         return done(err);
     });
 }));
+
 
 
 
