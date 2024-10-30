@@ -79,16 +79,16 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_CLIENT_ID,
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/facebook/callback"
+    callbackURL: "http://localhost:3000/auth/facebook/callback",
+    profileFields: ['id', 'displayName', 'emails', 'photos'] // Asegúrate de que esto esté aquí
 },
 (accessToken, refreshToken, profile, done) => {
-    // Create or find user logic here
     User.findOneAndUpdate(
-        { googleId: profile.id },
+        { facebookId: profile.id }, // Cambiado a facebookId
         {
             username: profile.displayName,
             email: profile.emails[0].value,
-            avatar: profile._json.picture,
+            avatar: profile.photos[0].value, // Cambiado a photos
             accessToken: refreshToken,
         },
         { upsert: true, new: true }
@@ -97,10 +97,8 @@ passport.use(new FacebookStrategy({
     }).catch(err => {
         return done(err);
     });
-}
+}));
 
-
-));
 
 
 
