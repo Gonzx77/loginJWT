@@ -6,7 +6,7 @@ const DiscordStrategy = require('passport-discord').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const path = require('path');
-const {join} = require('path');
+const { join } = require('path');
 require('dotenv').config();
 
 const router = require('./server/routes/router');
@@ -52,24 +52,54 @@ passport.use(new DiscordStrategy({
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/callback"
-  },
-  (accessToken, refreshToken, profile, done) => {
-    User.findOrCreate({ googleId: profile.id }, (err, user) => {
-      return done(err, user);
+    callbackURL: "http://localhost:3000/auth/google/callback",
+    scope: ['profile', 'email'] // Asegúrate de agregar esto
+},
+(accessToken, refreshToken, profile, done) => {
+    // Create or find user logic here
+    User.findOneAndUpdate(
+        { googleId: profile.id },
+        {
+            username: profile.displayName,
+            email: profile.emails[0].value,
+            avatar: profile._json.picture,
+            accessToken: refreshToken,
+        },
+        { upsert: true, new: true }
+    ).then(user => {
+        return done(null, user);
+    }).catch(err => {
+        return done(err);
     });
-  }
+}
+
+
 ));
+
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_CLIENT_ID,
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     callbackURL: "http://localhost:3000/auth/facebook/callback"
-  },
-  (accessToken, refreshToken, profile, done) => {
-    User.findOrCreate({ facebookId: profile.id }, (err, user) => {
-      return done(err, user);
+},
+(accessToken, refreshToken, profile, done) => {
+    // Create or find user logic here
+    User.findOneAndUpdate(
+        { googleId: profile.id },
+        {
+            username: profile.displayName,
+            email: profile.emails[0].value,
+            avatar: profile._json.picture,
+            accessToken: refreshToken,
+        },
+        { upsert: true, new: true }
+    ).then(user => {
+        return done(null, user);
+    }).catch(err => {
+        return done(err);
     });
-  }
+}
+
+
 ));
 
 
