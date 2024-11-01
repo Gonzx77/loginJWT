@@ -5,6 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "start": "node app.js",
+    "start2": "node --watch app.js",
     "dev": "nodemon app.js"
   },
   "keywords": [],
